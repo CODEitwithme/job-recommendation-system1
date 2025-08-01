@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job Recommender</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: linear-gradient(to bottom, #c8e0f8, #4c96f8); 
+        }
+        .job-image {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 60px; /* adjust as needed */
+        height: 60px;
+        object-fit: cover;
+        border-radius: 50%; /* make it circular */
+    }
+        h1, h2 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            resize: vertical;
+            background-color: #f3e7f8; /* softer lavender tone */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: border 0.5s ease, box-shadow 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #a974d8; /* lavender purple */
+            box-shadow: 0 0 0 3px rgba(169, 116, 216, 0.2);
+        }
+
+
+        button {
+            padding: 10px 20px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #230fde;
+        }
+
+        .card {
+            position: relative;
+            padding: 24px;
+            margin-bottom: 24px;
+            background: linear-gradient(to bottom right, #ffffff, #f7f9fc); /* light gradient */
+            border: 1.9px solid #080808;
+            
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+        }
+        .card {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+
+        .badge {
+            float: right;
+            background-color: green;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .clear {
+            clear: both;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">AI Job Recommender</h1>
+
+    <form method="post">
+        <label for="profile" style="display: block; text-align: center; margin-bottom: 10px;">
+    Enter your profile/skills:
+        </label>
+        <textarea name="profile" rows="5" cols="50">{{ request.form.get('profile', '') }}</textarea>
+        <button type="submit">Get Recommendations</button>
+    </form>
+
+    {% if recommendations %}
+        <h2>Top Matches</h2>
+        {% for job in recommendations %}
+    <div class="card">
+        <h3>{{ loop.index }}. {{ job.title }} <span class="badge">{{ job.match }}% Match</span></h3>
+        <div class="clear"></div>
+        <p><strong>Skills:</strong> {{ job.skills }}</p>
+        <p><strong>Education:</strong> {{ job.education }}</p>
+    </div>
+{% endfor %}
+    {% endif %}
+</body>
+</html>
